@@ -9,6 +9,10 @@ window.onload = function(){
     }
 }
 
+window.onscroll = function(){
+    generateScrollIndicator()
+}
+
 function getPositionCoordinates(position){
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
@@ -86,17 +90,20 @@ function createCards(arrData){
     colDiv.setAttribute('class','col-12 col-md-6 card-group')
 
     var cardDiv = document.createElement('div')
-    cardDiv.setAttribute('class','card')
+    cardDiv.setAttribute('class','card my-md-2')
 
     var rowDiv = document.createElement('div')
     rowDiv.setAttribute('class','row no-gutters')
 
     var colDivImg = document.createElement('div')
-    colDivImg.setAttribute('class','col-md-4')
+    colDivImg.setAttribute('class','col-md-12 col-lg-4 my-lg-3 ml-lg-3')
 
+    var imgDiv = document.createElement('img')
+    imgDiv.setAttribute('class','img-fluid')
+    imgDiv.setAttribute('src','https://via.placeholder.com/350x200')
 
     var colDivText = document.createElement('div')
-    colDivText.setAttribute('class','col-md-8')
+    colDivText.setAttribute('class','col-md-8 col-lg-7')
 
     var cardBody = document.createElement('div')
     cardBody.setAttribute('class','card-body')
@@ -109,15 +116,52 @@ function createCards(arrData){
     paraDescription.textContent = arrData.description
 
     var dateDiv = document.createElement('div')
-    dateDiv.innerHTML = '<b>'+arrData.date.iso+'</b>'
+    var temp = new Date(arrData.date.iso)
+    temp = temp.getDay()
+    var weekday = getWeekday(temp)
+    dateDiv.innerHTML = `<b>${arrData.date.iso}</b> (${weekday})`
 
     var paraType = document.createElement('div')
     paraType.textContent = arrData.type
 
     cardBody.append(cardHeading, paraDescription, dateDiv, paraType)
     colDivText.append(cardBody)
+    colDivImg.append(imgDiv)
     rowDiv.append(colDivImg, colDivText)
     cardDiv.append(rowDiv)
     colDiv.append(cardDiv)
     resCardDiv.append(colDiv)
+}
+
+function getWeekday(num){
+    switch(num){
+        case 0:
+            return 'Sunday';
+            break;
+        case 1:
+            return 'Monday';
+            break;
+        case 2:
+            return 'Tuesday';
+            break;
+        case 3:
+            return 'Wednesday';
+            break;
+        case 4:
+            return 'Thrusday';
+            break;
+        case 5:
+            return 'Friday';
+            break;
+        case 6:
+            return 'Saturday';
+            break;
+    }
+}
+
+function generateScrollIndicator(){
+    var pixelsVerticallyScrolled = window.scrollY
+    var windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var percentScrolled = (pixelsVerticallyScrolled / windowHeight) * 100
+    document.getElementById('scrollIndicator').style.width = percentScrolled+"%"
 }
