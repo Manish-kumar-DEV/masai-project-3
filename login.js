@@ -30,6 +30,7 @@ function getUserData(){
     }
     else{
         // show error
+        $('#errorModal').modal('show')
     }
 }
 

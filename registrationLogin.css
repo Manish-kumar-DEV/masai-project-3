@@ -5,6 +5,10 @@
     font-family: 'Playfair Display', serif;
 }
 
+.otherDefaultFont{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 body{
     opacity: 0;
     transition: opacity .5s;
