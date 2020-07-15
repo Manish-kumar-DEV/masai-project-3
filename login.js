@@ -26,7 +26,11 @@ function getUserData(){
 
     var validate = validateData(data)
     if(validate){
+        var activeUser = {}
+        activeUser['username'] = allUserData[0].value
+        localStorage.setItem('activeUser',JSON.stringify(activeUser))
         // go to Dashboard
+        location.href = 'userDashBoard.html'
     }
     else{
         // show error
