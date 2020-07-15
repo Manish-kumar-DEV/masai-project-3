@@ -1,0 +1,30 @@
+.fontWeight{
+    
+    font-weight: 600;
+}
+
+.title{
+    font-family: 'Playfair Display', serif;
+    font-size: 50px;
+}
+
+.containerHeight{
+    min-height: 90vh;
+}
+
+.bodyText{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 20px;
+}
+
+#sideBackground{
+    background-color: #64ffda;
+    width: 375px;
+    height: 200px;
+    position: absolute;
+    z-index: -1;
+}
+
+.navbar{
+    background-color: #64ffda;
+}
