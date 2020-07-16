@@ -1,26 +1,8 @@
 window.onload = function(){
     getActualName()
-    getPresentDate()
-    if(!navigator.geolocation){
-        alert('Geolocation is not supported')
-    }
-    else{
-        navigator.geolocation.getCurrentPosition(getPositionCoordinates, errorInPosition)
-    }
-}
 
-window.onscroll = function(){
-    generateScrollIndicator()
-}
-
-function getPositionCoordinates(position){
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    getCountryDetails(latitude,longitude)
-}
-
-function errorInPosition(){
-    alert('Sorry, we cannot get your location')
+    var formBtn = document.querySelector('form')
+    formBtn.addEventListener('submit',getData)
 }
 
 function getActualName(){
@@ -35,48 +17,47 @@ function getActualName(){
     }
 }
 
-function getCountryDetails(lat, lng){
+function getData(){
+    event.preventDefault()
+    var temp = event.target.querySelectorAll('input')
+
+    var data = {
+        country: temp[0].value,
+        year: temp[1].value
+    }
+    getCountryCode(data)
+}
+
+function getCountryCode(data){
     var xhr = new XMLHttpRequest()
-    xhr.open('GET','http://api.geonames.org/countrySubdivisionJSON?lat='+lat+'&lng='+lng+'&username=manish_dev')
+    xhr.open('GET','http://api.geonames.org/countryInfoJSON?username=manish_dev')
     xhr.onload = function(){
         if(this.status < 400){
-            console.log(this.response)
             var temp = JSON.parse(this.response)
-            getPresentCountry(temp.countryName, temp.adminName1)
-            getDefaultHolidays(temp.countryCode)
+            for(var i = 0; i < temp.geonames.length;i++){
+                if(temp.geonames[i].countryName == data.country){
+                    //send country code
+                    getDefaultHolidays(temp.geonames[i].countryCode, data.year)
+                }
+            }
         }
+       
+       
     }
     xhr.send()
 }
 
-function getPresentCountry(country, state){
-    var countryDiv = document.getElementById('presentCountry')
-    countryDiv.textContent = `${country} , ${state}`
-}
-
-function getPresentDate(){
-    var date = new Date()
-    var dateDiv = document.getElementById('presentDate')
-    dateDiv.textContent = date.toLocaleDateString()
-}
-
-function getDefaultHolidays(country){
-    var presentDate = new Date()
-    var presentYear = presentDate.getFullYear()
+function getDefaultHolidays(country, year){
+    var resCardDiv = document.querySelector('.holidayCards')
+    resCardDiv.innerHTML = ''
     var xhr = new XMLHttpRequest()
-    xhr.open('GET','https://calendarific.com/api/v2/holidays?api_key=b51e1c17930ef91acaee43f710b2f599e820390a&country='+country+'&year='+presentYear)
+    xhr.open('GET','https://calendarific.com/api/v2/holidays?api_key=b51e1c17930ef91acaee43f710b2f599e820390a&country='+country+'&year='+year)
     xhr.onload = function(){
         if(this.status < 400){
             var tempData = JSON.parse(this.response)
             var holiday = tempData.response['holidays']
             for(var i = 0; i < holiday.length; i++){
-                var tempDate = new Date(holiday[i].date.iso)
-                tempDate = tempDate.getTime()
-                var presentDate = new Date()
-                presentDate = presentDate.getTime()
-                if(tempDate >= presentDate){
-                    createCards(holiday[i])
-                }
+                createCards(holiday[i])
             }
         }
     }
@@ -157,11 +138,4 @@ function getWeekday(num){
             return 'Saturday';
             break;
     }
-}
-
-function generateScrollIndicator(){
-    var pixelsVerticallyScrolled = window.scrollY
-    var windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    var percentScrolled = (pixelsVerticallyScrolled / windowHeight) * 100
-    document.querySelector('.scrollIndicator').style.width = `${percentScrolled}%`
 }

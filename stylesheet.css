@@ -9,12 +9,26 @@
 }
 
 .containerHeight{
-    min-height: 90vh;
+    min-height: 80vh;
 }
 
 .bodyText{
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 20px;
+}
+
+.userIcons{
+    position: fixed;
+    bottom: 30px;
+}
+
+.userIcons img{
+    width: 20px;
+    margin: 0px 10px 0px;
+}
+
+.userIcons img:hover{
+    opacity: 0.5;
 }
 
 #sideBackground{
@@ -35,4 +49,9 @@
     top: 60px;
     z-index: 1;
     height: 5px;
+}
+
+.holidayCards > div:nth-child(1){
+    background-color: #64ffda;
+    padding: 0px 10px;
 }
